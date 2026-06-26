@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #faf7f4;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .bc-wrap {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: #faf7f4;
+  }
+
+  .bc-screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 44px 24px 40px;
+    animation: fadeIn 0.65s ease;
+  }
+  .bc-screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .dots { display: flex; gap: 7px; margin-bottom: 28px; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor; opacity: 0.18;
+    transition: opacity 0.3s;
+  }
+  .dot.on { opacity: 0.85; }
+  .s1 .dots, .s3 .dots { color: #2a2218; }
+  .s2 .dots { color: #f0ebe4; }
+
+  .s1 { background: #faf7f4; }
+
+  .s1-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.13;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: #2a2218;
+    margin-bottom: 36px;
+  }
+  .s1-title em { font-style: italic; color: #b85c3a; }
+
+  .s1-photo-wrap {
+    position: relative;
+    width: 188px;
+    height: 188px;
+    margin: 0 auto 40px;
+  }
+
+  .s1-hat {
+    position: absolute;
+    top: -62px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    z-index: 2;
+    animation: wiggle 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
+    pointer-events: none;
+  }
+  @keyframes wiggle {
+    0%,100% { transform: translateX(-50%) rotate(-6deg); }
+    50%      { transform: translateX(-50%) rotate(6deg); }
+  }
+
+  .s1-photo {
+    width: 188px;
+    height: 188px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8d5c4 0%, #c9a98a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 76px;
+    border: 5px solid #fff;
+    box-shadow: 0 10px 36px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+
+  .btn-open {
+    background: #2a2218;
+    color: #faf7f4;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 52px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    min-height: 54px;
+    transition: background 0.18s, transform 0.13s;
+  }
+  .btn-open:hover { background: #4a3828; transform: scale(1.04); }
+  .btn-open:active { transform: scale(0.97); }
+
+  .s2 {
+    background: #1a1816;
+    color: #f0ebe4;
+    padding-top: 52px;
+  }
+
+  .s2-eyebrow {
+    font-size: 12px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #7a7268;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .s2-polaroids {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 38px;
+  }
+
+  .polaroid {
+    background: #f5f0e8;
+    padding: 10px 10px 30px;
+    border-radius: 2px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.4);
+  }
+  .polaroid:nth-child(1) { transform: rotate(-2.8deg); }
+  .polaroid:nth-child(2) { transform: rotate(2deg) translateY(8px); }
+  .polaroid:nth-child(3) { transform: rotate(1.5deg) translateY(-5px); }
+  .polaroid:nth-child(4) { transform: rotate(-1.8deg) translateY(10px); }
+
+  .polaroid-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+  }
+  .p1 { background: #d4c4b0; }
+  .p2 { background: #b8cfc8; }
+  .p3 { background: #c8b8d4; }
+  .p4 { background: #d4c8b0; }
+
+  .polaroid-caption {
+    font-size: 11px;
+    font-style: italic;
+    color: #6b6050;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .s2-poem {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.9;
+    color: #b0a898;
+    text-align: center;
+    max-width: 280px;
+    margin-bottom: 40px;
+  }
+
+  .btn-continue {
+    background: #c4374a;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    min-height: 52px;
+    transition: background 0.18s, transform 0.13s;
+  }
+  .btn-continue:hover { background: #a02838; transform: scale(1.03); }
+  .btn-continue:active { transform: scale(0.97); }
+
+  .s3 { background: #fdf8f3; }
+
+  .s3-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    color: #2a2218;
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .s3-photo-wrap {
+    position: relative;
+    width: 148px;
+    height: 148px;
+    margin: 0 auto 14px;
+  }
+  .s3-photo {
+    width: 148px;
+    height: 148px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0c8e0 0%, #c0a0c8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    border: 6px solid #c4374a;
+    box-shadow: 0 0 0 3px #fdf8f3;
+    overflow: hidden;
+  }
+
+  .s3-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    max-width: 320px;
+    margin: 18px 0 28px;
+  }
+  .s3-tag {
+    background: #fff;
+    border: 0.5px solid #e0d8cc;
+    border-radius: 20px;
+    padding: 6px 15px;
+    font-size: 12px;
+    color: #6b5c4c;
+    letter-spacing: 0.4px;
+  }
+
+  .s3-letter {
+    background: #fff;
+    border: 0.5px solid #e8e0d4;
+    border-radius: 18px;
+    padding: 26px 22px;
+    width: 100%;
+    max-width: 348px;
+    margin-bottom: 22px;
+  }
+  .s3-letter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: #b85c3a;
+    margin-bottom: 14px;
+  }
+  .s3-letter-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #4a3e30;
+  }
+
+  .s3-mini-photos {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding: 4px 2px;
+    width: 100%;
+    max-width: 348px;
+    margin-bottom: 28px;
+    scrollbar-width: none;
+  }
+  .s3-mini-photos::-webkit-scrollbar { display: none; }
+
+  .mini-photo {
+    flex: 0 0 72px;
+    height: 72px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+  }
+  .m1 { background: #fde8d8; }
+  .m2 { background: #d8e8fd; }
+  .m3 { background: #d8fde8; }
+  .m4 { background: #fde8fd; }
+  .m5 { background: #fdfdd8; }
+
+  .btn-back {
+    background: #5a7a4a;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    min-height: 52px;
+    transition: background 0.18s, transform 0.13s;
+  }
+  .btn-back:hover { background: #3d5c32; transform: scale(1.03); }
+  .btn-back:active { transform: scale(0.97); }
+</style>
+</head>
+<body>
+
+<div class="bc-wrap">
+
+  <div class="bc-screen s1 active" id="s1">
+    <div class="dots">
+      <div class="dot on"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <h1 class="s1-title">Happy<br><em>Birthday</em><br>bro</h1>
+
+    <div class="s1-photo-wrap">
+      <img
+        class="s1-hat"
+        src="kolpak.png"
+        alt="праздничный колпак"
+      />
+      <div class="s1-photo">
+        <img src="bro2.png" alt="foto" style="width: 100%; height: 100;">
+      </div>
+    </div>
+
+    <button class="btn-open" onclick="goTo(2)">open me</button>
+  </div>
+
+  <div class="bc-screen s2" id="s2">
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot on"></div>
+      <div class="dot"></div>
+    </div>
+
+    <p class="s2-eyebrow">day ones</p>
+
+    <div class="s2-polaroids">
+      <div class="polaroid">
+        <div class="polaroid-img p1">
+          <img src="foto9.jpg" alt="foto" style="width: 100%; height: 100%;">
+        </div>
+        <div class="polaroid-caption"></div>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img p2">
+          <img src="foto1.jpg" alt="foto1" style="width: 100%; height:100%;">
+        </div>
+        <div class="polaroid-caption"></div>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img p3">
+          <img src="foto2.jpg" alt="foto2" style="width: 100%; height: 100%;">
+        </div>
+        <div class="polaroid-caption"></div>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img p4">
+          <img src="foto5.jpg" alt="foto5" style="width: 100%; height: 100%">
+        </div>
+        <div class="polaroid-caption"></div>
+      </div>
+    </div>
+
+    <p class="s2-poem">Every core memory right here.<br>Glad to ride this life with you,<br>bro.</p>
+
+    <button class="btn-continue" onclick="goTo(3)">continue →</button>
+  </div>
+
+  <div class="bc-screen s3" id="s3">
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot on"></div>
+    </div>
+
+    <p class="s3-heading">the one I know</p>
+
+    <div class="s3-photo-wrap">
+      <div class="s3-photo">
+        <img src="foto3.jpg" alt="bro1" style="width: 100%; height: 100%;">
+      </div>
+    </div>
+
+    <div class="s3-tags">
+      <span class="s3-tag">solid</span>
+      <span class="s3-tag">loyal</span>
+      <span class="s3-tag">calm</span>
+      <span class="s3-tag">funny</span>
+      <span class="s3-tag">hilarious</span>
+      <span class="s3-tag">steady</span>
+      <span class="s3-tag">chill</span>
+      <span class="s3-tag">real</span>
+    </div>
+
+    <div class="s3-letter">
+      <p class="s3-letter-title">a letter, for you —</p>
+      <p class="s3-letter-body">
+        Happy Birthday to my day one.<br><br>
+        From growing up together to doing our own thing. you always been the sturdiest person l know. lt's not about the big moments lt's just about how you always show up when it matters.<br><br>
+        Proud to call you my brother.
+      </p>
+    </div>
+
+    <div class="s3-mini-photos">
+      <div class="mini-photo m1">
+        <img src="foto2.jpg" alt="foto2" style="width: 100%; height: 100%;">
+      </div>
+      <div class="mini-photo m2">
+        <img src="foto9.jpg" alt="foto7" style="width: 100%; height: 100%;">
+      </div>
+      <div class="mini-photo m3">
+        <img src="foto7.jpg" alt="foto8" style="width: 100%; height: 100%;">
+      </div>
+      <div class="mini-photo m4">
+        <img src="foto4.jpg" alt="foto3" style="width: 100%; height: 100%;">
+      </div>
+      <div class="mini-photo m5">
+        <img src="foto5.jpg" alt="foto9" style="width: 100%; height: 100%;">
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="goTo(1)">← back to start</button>
+  </div>
+
+</div>
+
+<script>
+  function goTo(n) {
+    document.querySelectorAll('.bc-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
